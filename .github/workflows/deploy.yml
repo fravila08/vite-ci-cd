@@ -1,0 +1,39 @@
+name: Deploy to GH Pages
+
+on:
+    # dependent on the success from the e2e tests
+    workflow_run:
+        workflows: ["E2E Tests"]
+        branches: ["main"]
+        types:
+            - completed
+
+permissions:
+    contents: write
+
+jobs:
+    deploy:
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        runs-on: ubuntu-latest
+        steps:
+            #  checkout my codebase
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            #  set up their node environment
+            - name: set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                node-version: 20
+            #  install the projects dependencies
+            - name: Install dependencies
+              run: npm install
+            # build our project
+            - name: build the project
+              run: npm run build
+            # deploy our project
+            - name: deploy app
+              run: |
+                git config --global user.email "fr4v1l4@gmail.com"
+                git config --global user.name "fravila08"
+                REPO="https://x-access-token:${GITHUB_TOKEN}@github.com/fravila08/vite-ci-cd.git"
+                npx gh-pages -d dist -r $REPO

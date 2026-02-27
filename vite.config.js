@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/vite-ci-cd', // DO NOT ADD A CLOSING SLASH
   plugins: [
     tailwindcss(),
     react()
