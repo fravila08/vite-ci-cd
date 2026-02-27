@@ -1,0 +1,32 @@
+name: E2E Tests
+
+on:
+    pull_request:
+        branches:
+            - main
+    
+    workflow_dispatch:
+
+jobs:
+    cypress-run:
+        runs-on: ubuntu-latest
+
+        steps:
+            #  checkout my codebase
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            #  set up their node environment
+            - name: set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                node-version: 20
+            #  install the projects dependencies
+            - name: Install dependencies
+              run: npm install
+            #  run cypress
+            - name: execute cypress
+              uses: cypress-io/github-action@v6
+              with:
+                browser: chrome
+                start: npm run dev
+                wait-on: http://localhost:5173/vite-ci-cd
