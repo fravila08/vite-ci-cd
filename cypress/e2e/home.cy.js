@@ -69,7 +69,7 @@ describe('Home Page.jsx', () => {
         cy.url().should('include', '/about');
 
         cy.get('nav a').contains('Pokemon Searcher').click();
-        cy.url().should('eq', `${Cypress.config('baseUrl')}`);
+        cy.url().should('eq', `${Cypress.config('baseUrl')}/#/`);
 
         // Navigate to details page
         cy.get("input[name=pokemon-name]").type("Bulbasaur")
